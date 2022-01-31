@@ -1,5 +1,5 @@
 # r
-a subset of Python Requests
+a small subset of Python Requests
 
 a few years ago, when I was first learning Python and looking for http functionality, i found the batteries-included `urllib` -- part of the Python std lib
 https://docs.python.org/3/library/urllib.request.html and it said
