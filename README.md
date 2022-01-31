@@ -37,7 +37,7 @@ with urlopen('https://pypi.org/pypi/sampleproject/json') as res:
 and i thought: "hey, that doesn't look too hard" and wondered if i should give `urllib` a second look. so i did.
 
 i wrote a mini `requests` lib called `r` using `urllib`. it handles json, gzip and link headers.
-it does almost everything i need except for ~~connection-keep-alive~~ (which is not supported by `urllib` [1]) ~~and some url stuff (coming soon&trade;)~~.
+it does almost everything i need except for ~~connection-pooling keep-alive~~ (which is not supported by `urllib` [1]) ~~and some url stuff (coming soon&trade;)~~.
 
 [r.py source](r.py)
 
@@ -49,4 +49,4 @@ am i saying 15 LOC does everything that 4,000 LOC does? of course not!
 
 spending a few hours learning `urllib` and other libraries, and writing `r` helped me understand and appreciate `requests`.
 
-[1] but is supported by `urllib3`, see [r3.py source](r3.py) and [test/demo suite](test_r3.py)
+[1] but is supported by `urllib3`, see [r3.py source](r3.py) and [test/demo suite](test_r3.py), connection pooling makes it run much faster than without
