@@ -4,12 +4,14 @@ import json
 # Set these:
 with open('okta.yaml') as f: # in JSON format: {"okta":{"client":{"orgUrl":"...","token":"..."}}}
     config = json.load(f)['okta']['client']
-    base_url = config['orgUrl'] # eg 'https://gsroka.oktapreview.com'
+
+base_url = config['orgUrl'] # eg 'https://gsroka.oktapreview.com'
+token = config['token']
 
 group_id = '...'
 
 r.headers.update({
-    'Authorization': 'SSWS ' + config['token'],
+    'Authorization': 'SSWS ' + token,
     'Accept': 'application/json'
 })
 
