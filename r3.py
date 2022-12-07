@@ -1,6 +1,6 @@
 import urllib3
 import urllib.parse
-import json as json_
+from json import dumps as json_dumps, loads as json_loads
 import re
 
 headers = {'Accept-Encoding': 'gzip'}
@@ -13,14 +13,21 @@ def r(method, url, json=None):
     """Returns HTTPResponse object (including res.reason, .status, .headers) and also .json."""
     _headers = headers.copy()
     if json:
-        body = json_.dumps(json, separators=(',', ':')).encode()
+        body = json_dumps(json, separators=(',', ':')).encode()
         _headers['Content-Type'] = 'application/json'
     else:
         body = None
     res = http.request(method, url, headers=_headers, body=body)
-    res.json = json_.loads(data) if (data := res.data.decode()) else None
+    res.json = json_loads(data) if (data := res.data.decode()) else None
     return res
 
+def get_objects(url):
+    while url:
+        res = get(url)
+        for o in res.json:
+            yield o
+        url = res.next_url
+        
 def get(url):
     """Returns HTTPResponse object (including res.reason, .status, .headers) and also .json, .next_url."""
     res = r('GET', url)
