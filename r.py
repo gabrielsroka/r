@@ -1,8 +1,9 @@
 import urllib.request
 import urllib.parse
-import json as json_
+from json import dumps as json_dumps, load as json_load
 import gzip
 import re
+from http import HTTPStatus
 
 headers = {'Accept-Encoding': 'gzip'}
 
@@ -13,16 +14,23 @@ def r(method, url, json=None):
     """Returns HTTPResponse object (including res.reason, .status, .headers) and also .json."""
     _headers = headers.copy()
     if json:
-        data = json_.dumps(json, separators=(',', ':')).encode()
+        data = json_dumps(json, separators=(',', ':')).encode()
         _headers['Content-Type'] = 'application/json'
     else:
         data = None
     req = urllib.request.Request(url, data, _headers, method=method)
     with urllib.request.urlopen(req) as res:
-        if res.reason != 'No Content': # (204), TODO: add more reasons/statuses?
+        if res.status != HTTPStatus.NO_CONTENT: # TODO: add more reasons/statuses?
             fp = gzip.open(res) if res.headers['Content-Encoding'] == 'gzip' else res
-            res.json = json_.load(fp)
+            res.json = json_load(fp)
     return res
+
+def get_objects(url):
+    while url:
+        res = get(url)
+        for o in res.json:
+            yield o
+        url = res.next_url
 
 def get(url):
     """Returns HTTPResponse object (including res.reason, .status, .headers) and also .json, .next_url."""
