@@ -1,11 +1,13 @@
 import urllib.request
 import urllib.parse
+import http.cookiejar
 from json import dumps as json_dumps, load as json_load
 import gzip
 import re
 from http import HTTPStatus
 
 headers = {'Accept-Encoding': 'gzip'}
+cj = http.cookiejar.CookieJar()
 
 def url(url, **kwargs):
     return url + '?' + urllib.parse.urlencode(kwargs)
@@ -19,10 +21,14 @@ def r(method, url, json=None):
     else:
         data = None
     req = urllib.request.Request(url, data, _headers, method=method)
-    with urllib.request.urlopen(req) as res:
+    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+    with opener.open(req) as res:
         if res.status != HTTPStatus.NO_CONTENT: # TODO: add more reasons/statuses?
             fp = gzip.open(res) if res.headers['Content-Encoding'] == 'gzip' else res
-            res.json = json_load(fp)
+            if res.headers['Content-Type'] == 'application/json':
+                res.json = json_load(fp)
+            else:
+                res.text = fp.read().decode()
     return res
 
 def get_objects(url):
