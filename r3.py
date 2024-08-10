@@ -4,7 +4,6 @@ import json as _json
 import re
 
 headers = {'Accept-Encoding': 'gzip'}
-http = urllib3.PoolManager()
 
 def url(url, **kwargs):
     return url + '?' + urllib.parse.urlencode(kwargs)
@@ -17,7 +16,7 @@ def r(method, url, json=None):
         _headers['Content-Type'] = 'application/json'
     else:
         body = None
-    res = http.request(method, url, headers=_headers, body=body)
+    res = urllib3.request(method, url, headers=_headers, body=body)
     res.json = _json.loads(data) if (data := res.data.decode()) else None
     return res
 
