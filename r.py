@@ -1,6 +1,6 @@
 import urllib.request
 import urllib.parse
-from json import dumps as json_dumps, load as json_load
+import json as _json
 import gzip
 import re
 from http import HTTPStatus
@@ -15,7 +15,7 @@ def r(method, url, json=None):
     """Returns HTTPResponse object (including res.reason, .status, .headers) and also .json."""
     _headers = headers.copy()
     if json:
-        data = json_dumps(json, separators=(',', ':')).encode()
+        data = _json.dumps(json, separators=(',', ':')).encode()
         _headers['Content-Type'] = 'application/json'
     else:
         data = None
@@ -25,7 +25,7 @@ def r(method, url, json=None):
         if res.status != HTTPStatus.NO_CONTENT: # TODO: add more reasons/statuses?
             fp = gzip.open(res) if res.headers['Content-Encoding'] == 'gzip' else res
             if res.headers['Content-Type'] == 'application/json':
-                res.json = json_load(fp)
+                res.json = _json.load(fp)
             else:
                 res.text = fp.read().decode()
     return res
