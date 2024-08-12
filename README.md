@@ -50,3 +50,5 @@ am i saying 15 LOC does everything that 4,000 LOC does? of course not!
 spending a few hours learning `urllib` and other libraries, and writing `r` helped me understand and appreciate `requests`.
 
 [1] but is supported by `urllib3`, see [r3.py source](r3.py) and [test/demo suite](test_r3.py), connection pooling makes it run much faster than without
+
+UPDATE: it's also supported by http.client [rv2.py source](rv2.py)
