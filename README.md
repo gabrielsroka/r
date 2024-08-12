@@ -28,7 +28,7 @@ handler = urllib2.urlopen(req)
 
 so i learned `requests`, forgot about `urllib`, and that was the end of that. or was it?
 
-a few days ago, i was reading about `pprint` and there was an [example](https://docs.python.org/3/library/pprint.html#example) using `urllib` (slightly edited)
+a few days ago, i was reading about `pprint` and there was an [example](https://docs.python.org/3/library/pprint.html#example) using `urllib` (lightly edited)
 ```python
 with urlopen('https://pypi.org/pypi/sampleproject/json') as res:
     project = json.load(res)
@@ -43,7 +43,7 @@ it does almost everything i need except for ~~connection-pooling keep-alive~~ (w
 
 and here's a small [test/demo suite](test_r.py)
 
-the bulk of `r` is about 15 LOC. by contrast `requests` is 4,000 LOC, and it uses `urllib3` (which is different than `urllib`) and other libraries as well (http://line-count.herokuapp.com/)
+the bulk of `r` is about 15 LOC. by contrast `requests` is 4,000 LOC, and it uses `urllib3` (which is different than `urllib`) and other libraries as well.
 
 am i saying 15 LOC does everything that 4,000 LOC does? of course not!
 
